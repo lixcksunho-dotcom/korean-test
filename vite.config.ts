@@ -5,8 +5,8 @@ import react from '@vitejs/plugin-react';
 export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, '.', '');
     return {
-      // 1. 배포 시 상대 경로를 인식하도록 설정 (하얀 화면 해결 핵심)
-      base: './', 
+      // 배포 시 경로 문제를 방지하기 위해 빈 문자열로 설정합니다.
+      base: '', 
       
       server: {
         port: 3000,
@@ -19,13 +19,14 @@ export default defineConfig(({ mode }) => {
       },
       resolve: {
         alias: {
-          // 2. 경로 별칭 설정 보완
-          '@': path.resolve(__dirname, './src'), 
+          // 중요: 현재 파일들이 src 폴더가 아닌 최상위에 있으므로 경로를 수정합니다.
+          '@': path.resolve(__dirname, '.'), 
         }
       },
-      // 3. 빌드 결과물 위치 명시 (Vercel 기본값과 일치)
       build: {
         outDir: 'dist',
+        // 브라우저 호환성을 위해 에셋 경로를 관리합니다.
+        assetsDir: 'assets',
       }
     };
 });
